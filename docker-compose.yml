@@ -1,0 +1,53 @@
+# version: "3.3"
+# services:
+#   node-server:
+#     image: pdocker
+#     ports:
+#       - "1200:1200"
+#   db:
+#     image: mysql
+#     container_name: mysql_container
+#     restart: always
+#     port:
+#       - "3307:3307"
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=1111
+#       - MYSQL_USER=root
+#       - MYSQL_PASSWO7RD=1111
+#       - MYSQL_DATABASE=root
+#   links:
+#     - mysql
+#   depends_on:
+#     - mysql
+
+version: "3.3" # docker-compose version definition
+
+networks:
+  bridge-network:
+    driver: bridge
+services:
+  node-server:
+    networks:
+      - bridge-network
+    image: pdocker
+    ports:
+      - target: 1200
+        published: 1200
+        protocol: tcp
+    container_name: node-server
+    restart: always
+    depends_on:
+      - mysql-server # mysql start first
+  mysql-server:
+    networks:
+      - bridge-network
+    image: mysql
+    container_name: mysql-server
+    restart: always
+    ports:
+      - target: 3306
+        published: 3307
+        protocol: tcp
+    environment:
+      - MYSQL_ROOT_PASSWORD=1111
+      - MYSQL_DATABASE=dockerp
